@@ -1,0 +1,39 @@
+.data
+msg:  .asciiz "Digite um numero: "
+msg2: .asciiz "O fatorial eh: "
+
+.text
+.globl main
+
+main:
+    # print msg
+    la $a0, msg
+    li $v0, 4
+    syscall
+
+    # ler numero
+    li $v0, 5
+    syscall
+    move $s1, $v0
+
+    li $s0, 1
+
+while:
+	mult $s0, $s1
+	mflo $s0
+	subi $s1, $s1, 1
+	bnez $s1, while
+
+end:
+    # print msg2
+    la $a0, msg2
+    li $v0, 4
+    syscall
+    
+    # print resultado
+    move $a0, $s0
+    li $v0, 1
+    syscall
+
+    li $v0, 10
+    syscall

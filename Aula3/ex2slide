@@ -1,0 +1,38 @@
+.data
+msg:  .asciiz "Digite varios numeros ate encontrar um -1: "
+msg2: .asciiz "A media dos números que você digitou eh: "
+
+.text
+.globl main
+
+main:
+    # print msg
+    la $a0, msg
+    li $v0, 4
+    syscall
+
+    li $s2, 0
+    li $s3, 0
+ 
+loop:
+    li $v0, 5
+    syscall
+    move $s1, $v0
+    beq $s1, -1, end
+    add $s2, $s2, $s1
+    addi $s3, $s3, 1
+    j loop
+
+end:
+    # print msg2
+    la $a0, msg2
+    li $v0, 4
+    syscall
+    
+    div $s2, $s3
+    mflo $a0
+    li $v0, 1
+    syscall
+
+    li $v0, 10
+    syscall
