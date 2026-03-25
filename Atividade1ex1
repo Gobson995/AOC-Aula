@@ -1,0 +1,59 @@
+.data 
+
+vector:
+.word 5
+.word -3
+.word 12
+.word 0
+.word -7
+.word 8
+.word -1
+.word 4 # coloca o valor no vetor
+
+.text
+.globl main
+
+main: 
+la $s0, vector
+li $s1, 8 # tamanho do vetor
+li $s2, 0 # soma começa em 0
+li $s7, 0 # indice i
+li $s3, 0 # conta negativos começa em 0
+li $s4, 0 # verifica se a soma é maior que 20
+
+while:
+beq $s7, 8, end # se o i chegar em 8, vai para o end
+sll $t1, $s7, 2  	#
+add $t1, $t1, $s0	# vai percorrendo o vetor
+lw $t0, 0($t1)		#
+
+bgez $t0, soma # se for maior ou igual a zero vai pra soma
+
+continua:
+bltz $t0, contaneg # se for menor que zero vai para o contador de negativos
+
+next:
+addi $s7, $s7, 1 # soma 1 no indice
+j while # volta pro while
+
+soma:
+add $s2, $s2, $t0 # soma os positivos
+j continua # vai para o continua, mas nao vai ser negativo
+	   # então depois vai para o next
+
+contaneg:
+addi $s3, $s3, 1 # adiciona 1 no contador de negativo
+j next # volta pro next
+
+end:
+bgt $s2, 20, maior #se for maior que 20, vai para o maior
+j fim # se não for, vai pro fim
+
+maior:
+addi $s4, $s4, 1 # adiciona 1, para dizer que é maior que 20
+
+fim:	# encerra o programa
+li $v0, 10 
+syscall
+
+
