@@ -1,0 +1,40 @@
+.text
+.globl main
+
+main:
+    li      $a0, 7                  # Carrega o argumento (n = 4)
+    jal     fatorial                # Chama a função fatorial
+    move    $a0, $v0                # Move o resultado retornado em $v0 para $a0
+    li      $v0, 1                  # Código da syscall para imprimir inteiro
+    syscall                         # Executa a impressão
+
+end:
+    li      $v0, 10                 # Código da syscall para encerrar o programa
+    syscall                         # Encerra o programa
+
+fatorial:
+    # if ($a0 < 1)
+    blt     $a0, 1, fat_parada      # Condição de parada: se n < 1, vai para fat_parada
+
+    # salvar contexto na pilha (Stack)
+    addi    $sp, $sp, -8            # Aloca espaço de 8 bytes na pilha (para 2 registradores)
+    sw      $s0, 0($sp)             # Salva o registrador $s0 na pilha
+    sw      $ra, 4($sp)             # Salva o endereço de retorno $ra na pilha
+
+    # código principal com chamada recursiva
+    move    $s0, $a0                # Salva o valor de 'n' atual em $s0
+    addi    $a0, $a0, -1            # n = n - 1 (prepara o argumento para a próxima chamada)
+    jal     fatorial                # Chamada recursiva: fatorial(n-1). Resultado vai para $v0
+    mul     $v0, $v0, $s0           # Multiplica o retorno pela variável 'n' salva ($v0 *= $s0)
+
+    # restaurar contexto da pilha
+    lw      $s0, 0($sp)             # Recupera o valor original de $s0
+    lw      $ra, 4($sp)             # Recupera o endereço de retorno original $ra
+    addi    $sp, $sp, 8             # Libera os 8 bytes alocados na pilha
+
+    # retornar
+    jr      $ra                     # Retorna para quem chamou a função
+
+fat_parada:
+    ori     $v0, $zero, 1           # Caso base: retorna 1 (0! ou 1! = 1)
+    jr      $ra                     # Retorna para quem chamou a função
