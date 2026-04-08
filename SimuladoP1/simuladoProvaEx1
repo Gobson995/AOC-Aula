@@ -1,0 +1,65 @@
+.data
+    # Cria uma "estante vazia" na RAM com 32 bytes (8 inteiros * 4 bytes)
+    vetor: .space 32       
+    
+    msg:   .asciiz "Digite um numero: "
+    ms2:   .asciiz "\nO numero de par é: "
+    ms3:   .asciiz "\nO numero de impar é: "
+    
+.text
+.globl main
+
+main:
+    la      $s0, vetor
+    li      $t0, 0         
+    li      $t1, 8
+    li      $t6, 0
+    li	    $t7, 0         
+
+loop_leitura:
+    la      $a0, msg # printa a mensagem
+    li      $v0, 4
+    syscall
+    
+    li      $v0, 5 # salva o que digitou
+    syscall
+    move    $t2, $v0       
+
+    sll     $t3, $t0, 2
+    add     $t4, $s0, $t3  # junta o endereço base com o t3, que é a posição no vetor
+    
+    sw      $t2, 0($t4)     # Pega o número de $t2 e joga no endereço $t4
+    
+verifica_paridade:
+    andi $t5, $t2, 1
+    beq  $t5, 1, soma_impar
+    add  $t6, $t6, 1
+
+fim_loop_leitura:
+    addi    $t0, $t0, 1
+    bne     $t0, $t1, loop_leitura
+    
+    la $a0, ms2
+    li $v0, 4
+    syscall
+    
+    move $a0, $t6
+    li $v0, 1
+    syscall
+    
+    la $a0, ms3
+    li $v0, 4
+    syscall
+    
+    move $a0, $t7
+    li $v0, 1
+    syscall
+    
+end:
+    li $v0, 10
+    syscall
+
+
+soma_impar:
+   add  $t7, $t7, 1
+   j fim_loop_leitura
