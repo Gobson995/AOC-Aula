@@ -1,0 +1,18 @@
+3.a - 
+    É um programa que recebe um array com 5 inteiros
+    faz uma varredura e retorna o maior valor desse array.
+
+3.b -
+    9, pois é o maior valor.
+
+3.c -
+    jal maior = salta para a funçao/branch chamada "maior" e salva
+                o endereço de retorno no $ra.
+    jr $ra = volta para quem chamou ele na main.
+    pilha($sp) = faz o backup do $ra e do $s0 original.
+
+3.d -
+    recebe o endereço base em $a0, $t0 é o indice do laço, vai indo de 4 em 4
+    bytes da esquerda para direita com sll, adiciona o endereço base com o que
+    foi deslocado para direita em $t2 e com o lw, coloca esse valor do indice
+    do array que ta em $t2 no $t3.

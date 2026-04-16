@@ -1,0 +1,56 @@
+.data
+	vetor: .space 20
+	msg: .asciiz "\nDigite um valor: "
+	msg2: .asciiz "\nO valor do vetor é: "
+	
+	
+.text
+.globl main
+
+main:
+	la $s0, vetor
+	
+	li $t0, 0
+	li $t1, 5
+	
+loop_leitura:
+	la $a0, msg
+	li $v0, 4
+	syscall
+	
+	sll $t2, $t0, 2
+	
+	add $t3, $s0, $t2
+	
+	li $v0, 5
+	syscall
+	
+	sw $v0, 0($t3)
+	
+	addi $t0, $t0, 1
+	bne $t0, $t1, loop_leitura
+	
+	li $t0, 0
+	
+loop_imprimir:
+	la $a0, msg2
+	li $v0, 4
+	syscall
+	
+	sll $t2, $t0, 2
+	
+	add $t4, $s0, $t2
+	
+	lw $a0, 0($t4)
+	li $v0, 1
+	syscall
+	
+	 addi $t0, $t0, 1
+	 bne $t0, $t1, loop_imprimir
+	 
+end:
+	li $v0, 10
+	syscall
+	 
+	
+	
