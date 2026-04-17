@@ -1,0 +1,28 @@
+# ler um vetor de 6 numeros e printar a soma dos positivos
+
+.data
+	vetor: .space 24
+.text
+.globl main
+main:
+	la $s0, vetor
+	li $t0, 0
+	li $t1, 6
+	li $t4, 0
+loop_leitura:
+	sll $t2, $t0, 2
+	add $t3, $t2, $s0
+	li $v0, 5
+	syscall
+	sw $v0, 0($t3)
+	ble $v0, $zero, fim_loop
+	add $t4, $t4, $v0
+fim_loop:
+	addi $t0, $t0, 1
+	bne $t0, $t1, loop_leitura
+	move $a0, $t4
+	li $v0, 1
+	syscall
+end:
+	li $v0, 10
+	syscall

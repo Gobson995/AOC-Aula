@@ -1,0 +1,38 @@
+# ler 5 vetores, trocar negativos por 0 e contar as trocas
+
+.data
+	vetor: .space 20
+.text
+.globl main
+main:
+	la $s0, vetor
+	li $t0, 0
+	li $t1, 5
+	li $t4, 0
+loop_leitura:
+	sll $t2, $t0, 2
+	add $t3, $t2, $s0
+	li $v0, 5
+	syscall
+	bge $v0, $zero, nao_troca
+	move $v0, $zero
+	addi $t4, $t4, 1
+nao_troca:
+	sw $v0, 0($t3)
+	addi $t0, $t0, 1
+	bne $t0, $t1, loop_leitura
+	li $t0, 0
+loop_print:	
+	sll $t2, $t0, 2
+	add $t3, $t2, $s0
+	lw $a0, 0($t3)
+	li $v0, 1
+	syscall
+	addi $t0, $t0, 1
+	bne $t0, $t1, loop_print
+	move $a0, $t4
+	li $v0, 1
+	syscall
+end:
+	li $v0, 10
+	syscall
