@@ -1,0 +1,39 @@
+# pega um numero, soma 5 e dobra ele
+
+.text
+.globl main
+
+main:
+	li $v0, 5
+	syscall
+	move $a0, $v0
+	
+	jal calcula_dobro_mais_cinco
+	
+	move $a0, $v0
+	li $v0, 1
+	syscall
+
+end:
+	li $v0, 10
+	syscall
+	
+calcula_dobro_mais_cinco:
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sw $s0, 0($sp)
+	
+	addi $s0, $a0, 5
+	
+	move $a0, $s0
+	
+	jal dobro_numero
+	
+	lw $s0, 0($sp) 
+	lw $ra, 4($sp)
+	addi $sp, $sp, 8
+	jr $ra
+	
+dobro_numero:
+	mul $v0, $a0, 2
+	jr $ra
