@@ -1,0 +1,40 @@
+.data 
+	msg1: .asciiz "Digite um número: "
+	msg2: .asciiz "\n\nO valor absoluto eh:  "
+	
+.text
+.globl main
+
+main:
+	la $a0, msg1
+	li $v0, 4
+	syscall
+	
+	li $v0, 5
+	syscall
+	
+	move $a0, $v0
+	
+	jal absoluto
+	
+	move $t0, $v0
+	
+	la $a0, msg2
+	li $v0, 4
+	syscall
+	
+	move $a0, $t0
+	li $v0, 1
+	syscall
+	
+end:
+	li $v0, 10
+	syscall
+	
+absoluto:
+	move $v0, $a0
+	bge $v0, $zero, fim_absoluto
+	mul $v0, $v0, -1
+
+fim_absoluto:
+	jr $ra
