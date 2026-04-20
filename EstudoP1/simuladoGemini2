@@ -1,0 +1,29 @@
+.text
+.globl main
+
+main:
+	li $v0, 5
+	syscall
+	move $a0, $v0
+	jal verifica
+	move $a0, $v0
+	li $v0, 1
+	syscall
+
+end:
+	li $v0, 10
+	syscall
+	
+verifica:
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sw $s0, 0($sp)
+	blt $a0, 18, fim_verifica
+	addi $s0, $s0, 1
+
+fim_verifica:
+	move $v0, $s0
+	lw $s0, 0($sp)
+	lw $ra, 4($sp)
+	addi $sp, $sp, 8
+	jr $ra

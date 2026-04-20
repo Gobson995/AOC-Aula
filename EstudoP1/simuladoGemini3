@@ -1,0 +1,48 @@
+.text
+.globl main
+
+main:
+	li $v0, 5
+	syscall
+	move $a0, $v0
+	
+	li $v0, 5
+	syscall
+	move $a1, $v0
+	
+	jal calcula_formula
+	
+	move $a0, $v0
+	li $v0, 1
+	syscall
+	
+end:
+	li $v0, 10
+	syscall
+	
+calcula_formula:
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sw $s0, 0($sp)
+	
+	move $s0, $a1
+	
+	jal dobro
+	
+	move $t0, $v0
+	add $s0, $s0, $t0
+	move $v0, $s0
+	
+	lw $s0, 0($sp)
+	lw $ra, 4($sp)
+	addi $sp, $sp, 8
+	
+	jr $ra
+	
+dobro:
+	move $t4, $a0
+	li $t3, 2
+	mul $t4, $t4, $t3
+	move $v0, $t4
+	jr $ra
+	
