@@ -1,0 +1,43 @@
+.text
+.globl main
+
+main:
+	li $v0, 5
+	syscall
+	move $a0, $v0
+	li $v0, 5
+	syscall
+	move $a1, $v0
+	
+	jal calcula_salario
+	
+	move $a0, $v0
+	li $v0, 1
+	syscall
+	
+end: 
+	li $v0, 10
+	syscall
+	
+calcula_salario:
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sw $s0, 0($sp)
+	move $s0, $a1
+	
+	jal triplo
+	
+	move $t0, $v0
+	li  $t1, 0
+	add $t1, $s0, $t0
+	move $v0, $t1
+	lw $s0, 0($sp)
+	lw $ra, 4($sp)
+	addi $sp, $sp, 8
+	jr $ra
+	
+triplo:
+	li $t3, 0
+	mul $t3, $a0, 3
+	move $v0, $t3
+	jr $ra

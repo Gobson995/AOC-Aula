@@ -1,0 +1,40 @@
+.text
+.globl main
+
+main:
+	li $v0, 5
+	syscall
+	move $a0, $v0
+	
+	jal fatorial
+	
+	move $a0, $v0
+	li $v0, 1
+	syscall
+	
+end: 
+	li $v0, 10
+	syscall
+	
+fatorial:
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sw $s0, 0($sp)
+	
+	move $s0, $a0
+	
+	li $v0, 1
+	ble $s0, 1, fim_fatorial
+	
+	addi $a0, $s0, -1
+	jal fatorial
+	
+	mul $v0, $s0, $v0
+	
+fim_fatorial:
+	lw $s0, 0($sp)
+	lw $ra, 4($sp)
+	addi $sp, $sp, 8
+	
+	jr $ra
+	

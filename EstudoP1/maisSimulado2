@@ -1,0 +1,29 @@
+.text
+.globl main
+
+main:
+	li $v0, 5
+	syscall
+	move $a0, $v0
+	li $v0, 5
+	syscall
+	move $a1, $v0
+	
+	jal calcula_multa
+	
+	move $a0, $v0
+	li $v0, 1
+	syscall
+	
+end: 
+	li $v0, 10
+	syscall
+	
+calcula_multa:
+	li $t0, 0
+	ble $a1, $a0, fim_multa
+	addi $t0, $t0, 1
+	
+fim_multa:
+	move $v0, $t0
+	jr $ra

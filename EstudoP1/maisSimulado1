@@ -1,0 +1,48 @@
+.data
+	vetor: .space 24
+.text
+.globl main
+
+main:
+	la $s0, vetor
+	li $t0, 0
+	li $t1, 6
+
+loop_leitura:
+	sll $t2, $t0, 2
+	add $t3, $t2, $s0
+	li $v0, 5
+	syscall
+	sw $v0, 0($t3)
+	addi $t0, $t0, 1
+	bne $t0, $t1, loop_leitura
+	
+	li $t0, 0
+	
+loop_troca:
+	sll $t2, $t0, 2
+	add $t3, $t2, $s0
+	lw $t4, 0($t3)
+	andi $t5, $t4, 1
+	beq $t5, 0, final_troca
+	li $t4, 0
+	sw $t4, 0($t3)
+	
+final_troca:
+	addi $t0, $t0, 1
+	bne $t0, $t1, loop_troca
+	
+	li $t0, 0
+	
+loop_imp:
+	sll $t2, $t0, 2
+	add $t3, $t2, $s0
+	lw $a0, 0($t3)
+	li $v0, 1
+	syscall
+	addi $t0, $t0, 1
+	bne $t0, $t1, loop_imp
+	
+end:
+	li $v0, 10
+	syscall
